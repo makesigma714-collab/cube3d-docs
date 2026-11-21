@@ -24,7 +24,7 @@ Available libraries are `string`, `table`, `math`, `os.time`, `os.clock`, plus `
 | Event connections per script | 2048 |
 | Call depth | 180 |
 | Text in one string | 1 MiB |
-| Total parts in a world | 20,000; scripts have no separate 2,000-part allowance in the next server update |
+| Total parts in a world | 20,000; scripts have no separate 2,000-part allowance |
 | Log lines | 40 a second per script |
 
 A loop with no `task.wait` can slow its own script down, but it can't hold up the game. Other
