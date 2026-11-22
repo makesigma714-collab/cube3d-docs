@@ -1,6 +1,6 @@
 import defaultMdxComponents from 'fumadocs-ui/mdx'
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs'
-import { BookOpen, Earth, LayoutPanelLeft, Monitor, Play, Timer } from 'lucide-react'
+import { BookOpen, Earth, LayoutPanelLeft, Monitor } from 'lucide-react'
 
 export function getMDXComponents(components) {
   return {
@@ -11,8 +11,6 @@ export function getMDXComponents(components) {
     Earth,
     LayoutPanelLeft,
     Monitor,
-    Play,
-    Timer,
     ...components,
   }
 }
