@@ -80,7 +80,7 @@ end
 World:CreatePart(): Part
 ```
 
-Creates a part at the world origin with default properties and returns it. Limited to 2000 parts created this way per server.
+Creates a part at the world origin with default properties and returns it. Raises an error once the world reaches its 20,000-part limit.
 
 ```lua
 local block = World:CreatePart()
