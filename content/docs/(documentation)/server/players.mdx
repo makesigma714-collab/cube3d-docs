@@ -1,0 +1,75 @@
+---
+title: Players
+description: "Service that tracks connected players and fires join, leave, chat and rank events."
+icon: Users
+---
+
+```lua
+local Players = game:GetService("Players")
+```
+
+Each connected client is represented by a [Player](/server/player) with an associated [Character](/server/character).
+
+## Methods
+
+### GetPlayers
+
+```lua
+Players:GetPlayers(): { Player }
+```
+
+Returns all connected players.
+
+```lua
+for _, player in ipairs(Players:GetPlayers()) do
+	player:SendMessage("Hello!")
+end
+```
+
+### FindFirstChild
+
+```lua
+Players:FindFirstChild(username: string): Player?
+```
+
+Returns the player with the given username, or `nil`.
+
+## Events
+
+### PlayerAdded
+
+```lua
+Players.PlayerAdded(player: Player)
+```
+
+Fires when a player joins.
+
+```lua
+Players.PlayerAdded:Connect(function(player)
+	print(player.Name .. " joined")
+end)
+```
+
+### PlayerRemoving
+
+```lua
+Players.PlayerRemoving(player: Player)
+```
+
+Fires before a player is removed from the server.
+
+### PlayerChatted
+
+```lua
+Players.PlayerChatted(player: Player, text: string)
+```
+
+Fires when any player sends a chat message.
+
+### RankChanged
+
+```lua
+Players.RankChanged(player: Player)
+```
+
+Fires when a player's rank in this game changes.

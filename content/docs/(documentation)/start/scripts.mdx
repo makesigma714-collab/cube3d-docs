@@ -1,0 +1,79 @@
+---
+title: Scripts
+description: "Script execution contexts, parenting, startup order, scheduling rules and runtime limits."
+icon: FileCode
+---
+
+## Server and client scripts
+
+A script's execution context is set by its **Runs on** property.
+
+| | Server script | Client script |
+| --- | --- | --- |
+| Runs on | The server, once | Each connected client |
+| World access | Read and write | Read only. Writes go through [Remote](/server/remote) |
+| Visibility | Every player, part and model | Replicated objects only |
+| Services | Players, World, Teams, Tools, Remote, State, DataStore, Storage | Players, World, Teams, Remote, State, UI, Effects, Input, Tools, Build |
+
+Authoritative game state (scoring, damage, doors, round flow) belongs on the server. Local presentation (menus, input handling, screen effects) belongs on the client.
+
+<Callout type="warn" title="Clients are untrusted">
+Client scripts can be modified by the player. Any decision that affects game state must be made and validated on the server.
+</Callout>
+
+## Parenting
+
+`script.Parent` depends on where the script is placed in the Explorer.
+
+| Location | `script.Parent` |
+| --- | --- |
+| Inside a part | The part (server scripts) |
+| Inside a model | The model (server scripts) |
+| Inside a tool | The tool (server and client) |
+| In the Scripts folder | `nil` |
+
+Client scripts inside parts and models receive `nil`. Use `game:GetService("World"):FindFirstChild(name)` to resolve parts on the client.
+
+```lua
+local door = script.Parent
+
+door.Touched:Connect(function(player)
+	door.Transparency = 0.5
+	door.CanCollide = false
+end)
+```
+
+Scripts can contain [value objects](/server/values), accessed by name, for example `script.Damage.Value`.
+
+## Startup order
+
+Server scripts start when the server loads the world. `game.Started` fires after every server script has started. Client scripts start on each client after the world has loaded.
+
+Scripts inside [Storage](/server/storage) do not run until their container is cloned into the world, and stop when the clone is destroyed.
+
+## Scheduling
+
+Scripts are cooperatively scheduled. A task that runs for more than one second without yielding is terminated, and a script is stopped after three such terminations. Long-running loops must call `task.wait()`.
+
+```lua
+while true do
+	task.wait(1)
+	print("Still going")
+end
+```
+
+See [Globals](/start/globals) for `task.wait`, `task.delay` and `task.spawn`.
+
+## Errors and Output
+
+`print` and `warn` write to Studio's Output during tests, and to the in-game console for the game's owner. Errors report the script name, line number and message. An error terminates the task it occurred in; other tasks in the script continue.
+
+## Limits
+
+| Limit | Amount |
+| --- | --- |
+| Scripts in one world | 64 |
+| Memory for one script | 16 MB |
+| Running tasks in one script | 512 |
+| Event connections in one script | 2048 |
+| Time without yielding | 1 second |

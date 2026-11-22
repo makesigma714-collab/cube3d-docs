@@ -1,0 +1,217 @@
+---
+title: Player
+description: "Represents a connected client. Exposes account data, health, team membership, inventory and chat events."
+icon: User
+---
+
+Player objects are returned by [Players](/server/players) and passed to events such as `PlayerAdded` and `Touched`.
+
+## Properties
+
+### Name
+
+```lua
+player.Name: string
+```
+
+Account username. Read only.
+
+### UserId
+
+```lua
+player.UserId: number
+```
+
+Numeric account id. Stable across sessions. Read only.
+
+### Role
+
+```lua
+player.Role: string
+```
+
+Platform role, for example `user`, `moderator` or `admin`. Read only.
+
+### Rank
+
+```lua
+player.Rank: string
+```
+
+Rank within this game, for example `Owner` or `Visitor`. Read only.
+
+### Character
+
+```lua
+player.Character: Character
+```
+
+The player's in-world [Character](/server/character).
+
+### Health
+
+```lua
+player.Health: number
+```
+
+Current health. Writable.
+
+### Team
+
+```lua
+player.Team: Team?
+```
+
+Current team, or `nil`. Assign to change team.
+
+### EquippedTool
+
+```lua
+player.EquippedTool: Tool?
+```
+
+Currently equipped tool, or `nil`. Read only.
+
+## Methods
+
+### SetStat
+
+```lua
+player:SetStat(name: string, value: any)
+```
+
+Sets a leaderboard stat. Maximum 4 stats per player.
+
+```lua
+player:SetStat("Coins", 10)
+```
+
+### SendMessage
+
+```lua
+player:SendMessage(text: string)
+```
+
+Sends a system chat message visible only to this player.
+
+### TakeDamage
+
+```lua
+player:TakeDamage(amount: number, attacker: Player?): boolean
+```
+
+Applies damage. `attacker` is used for friendly-fire checks and kill attribution. Returns `true` if damage was applied.
+
+### Teleport
+
+```lua
+player:Teleport(position: Vector3)
+```
+
+Teleports the character to `position`.
+
+### Respawn
+
+```lua
+player:Respawn()
+```
+
+Respawns the character at a spawn location.
+
+### Kick
+
+```lua
+player:Kick(reason: string?)
+```
+
+Disconnects the player from the server. `reason` is shown to the player.
+
+### SetTeam
+
+```lua
+player:SetTeam(team: Team?)
+```
+
+Equivalent to assigning `Team`.
+
+### GetTeam
+
+```lua
+player:GetTeam(): Team?
+```
+
+Equivalent to reading `Team`.
+
+### GiveTool
+
+```lua
+player:GiveTool(tool: Tool): boolean
+```
+
+Adds a tool to the player's inventory. Returns `true` on success. Inventory limit is 16 tools.
+
+### TakeTool
+
+```lua
+player:TakeTool(tool: Tool): boolean
+```
+
+Removes a tool from the player's inventory. Returns `true` on success.
+
+### HasTool
+
+```lua
+player:HasTool(tool: Tool): boolean
+```
+
+Returns `true` if the tool is in the player's inventory.
+
+### GetTools
+
+```lua
+player:GetTools(): { Tool }
+```
+
+Returns the tools in the player's inventory.
+
+## Events
+
+### CharacterAdded
+
+```lua
+player.CharacterAdded(character: Character)
+```
+
+Fires when the player's character spawns or respawns.
+
+### Died
+
+```lua
+player.Died(killer: Player?)
+```
+
+Fires when the player dies. `killer` is the attributed player, or `nil`.
+
+```lua
+player.Died:Connect(function(killer)
+	if killer then
+		killer:SendMessage("You knocked out " .. player.Name)
+	end
+end)
+```
+
+### TeamChanged
+
+```lua
+player.TeamChanged(newTeam: Team?, oldTeam: Team?)
+```
+
+Fires when the player's team changes.
+
+### Chatted
+
+```lua
+player.Chatted(text: string)
+```
+
+Fires when the player sends a chat message.

@@ -1,0 +1,74 @@
+---
+title: Your first script
+description: "Handle Part.Touched, update leaderboard stats with Player:SetStat and add a per-player cooldown."
+icon: Play
+---
+
+## 1. Make the pad
+
+1. Open your game in Studio.
+2. Press **Part** on the ribbon.
+3. In Properties, set **Size** to `6, 1, 6`.
+4. Rename it `Pad`.
+
+## 2. Add a script
+
+Right-click **Pad** in the Explorer, choose **New Server Script** and replace its contents with:
+
+```lua
+local pad = script.Parent
+
+pad.Touched:Connect(function(player)
+	print(player.Name .. " stepped on the pad")
+end)
+```
+
+`script.Parent` resolves to the part. `Touched` fires when a character begins touching it and passes the `Player`.
+
+## 3. Test it
+
+Press **Play** and walk onto the pad. The handler prints to Output.
+
+## 4. Update a leaderboard stat
+
+Track a per-player counter keyed by `UserId` and publish it with `SetStat`:
+
+```lua
+local pad = script.Parent
+local points = {}
+
+pad.Touched:Connect(function(player)
+	points[player.UserId] = (points[player.UserId] or 0) + 1
+	player:SetStat("Points", points[player.UserId])
+	pad.Color = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+end)
+```
+
+Each touch increments the stat and sets a random `Color`.
+
+## 5. Add a cooldown
+
+`Touched` fires on every new contact, so repeated contact inflates the counter. Gate it with a per-player debounce:
+
+```lua
+local pad = script.Parent
+local points = {}
+local resting = {}
+
+pad.Touched:Connect(function(player)
+	if resting[player.UserId] then
+		return
+	end
+	resting[player.UserId] = true
+	points[player.UserId] = (points[player.UserId] or 0) + 1
+	player:SetStat("Points", points[player.UserId])
+	task.wait(2)
+	resting[player.UserId] = nil
+end)
+```
+
+## Related
+
+- [Settings with values](/tutorials/values): move the cooldown into a value object.
+- [Saving data](/tutorials/saving-data): persist the counter.
+- [Part](/server/part): full part reference.

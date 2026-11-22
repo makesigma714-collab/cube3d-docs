@@ -1,0 +1,94 @@
+---
+title: UI
+description: "Client service for on-screen messages, windows and panels, and access to StarterGui widgets."
+icon: AppWindow
+---
+
+```lua
+local UI = game:GetService("UI")
+```
+
+Windows and panels are containers for [widgets](/client/widget).
+
+## Methods
+
+### ShowMessage
+
+```lua
+UI:ShowMessage(text: string, seconds: number?)
+```
+
+Displays `text` near the top of the local player's screen for `seconds` (default 4). Pass 0 to keep it until cleared. For a message shown to every player, call [game:Message](/server/game#message) on the server.
+
+### ClearMessage
+
+```lua
+UI:ClearMessage()
+```
+
+Clears the message set by `ShowMessage`.
+
+### FindFirstChild
+
+```lua
+UI:FindFirstChild(name: string): Widget?
+```
+
+Returns the **StarterGui** widget with the given name, or `nil`.
+
+```lua
+local button = UI:FindFirstChild("PlayButton")
+
+button.Pressed:Connect(function()
+	button.Text = "Loading..."
+end)
+```
+
+### CreateWindow
+
+```lua
+UI:CreateWindow(width: number, height: number, style: string?): Widget
+```
+
+Creates a translucent window docked to the left edge. With `style` set to `"toolbar"` it docks to the bottom edge.
+
+```lua
+local window = UI:CreateWindow(260, 180)
+window:AddLabel("Shop", 18, true)
+```
+
+### CreatePanel
+
+```lua
+UI:CreatePanel(options: table): Widget
+```
+
+Creates a freely positioned panel. `X`, `Y`, `AnchorX` and `AnchorY` are normalized screen coordinates from 0 to 1.
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `X`, `Y` | 0.5, 0.02 | Normalized screen position. |
+| `AnchorX`, `AnchorY` | 0.5, 0 | Normalized anchor point within the panel. |
+| `Width`, `Height` | 400, 140 | Size in pixels. |
+| `Padding` | 10 | Inner padding in pixels. |
+
+```lua
+local panel = UI:CreatePanel({ Y = 0.05, Width = 300, Height = 60 })
+panel:AddLabel("Round 1", 20, true)
+```
+
+### Remember
+
+```lua
+UI:Remember(name: string, text: string)
+```
+
+Persists a string on the local device, scoped to this game. Not visible to the server or other devices. Use [DataStore](/server/datastore) for authoritative data.
+
+### Recall
+
+```lua
+UI:Recall(name: string): string?
+```
+
+Returns the string stored with `Remember`, or `nil`.

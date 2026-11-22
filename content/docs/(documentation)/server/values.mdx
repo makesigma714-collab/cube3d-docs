@@ -1,0 +1,112 @@
+---
+title: Values
+description: "Typed single-value objects used to expose configuration to scripts."
+icon: Hash
+---
+
+| Class | Holds |
+| --- | --- |
+| `StringValue` | `string`, up to 1000 characters |
+| `IntValue` | Integer |
+| `NumberValue` | Floating-point number |
+| `BoolValue` | `boolean` |
+| `Vector3Value` | `Vector3` |
+
+Numeric values are clamped to ±1,000,000,000. In Studio, insert a value by right-clicking a part, model, script or Storage and choosing **New IntValue** or another type. See [Settings with values](/tutorials/values).
+
+```lua
+local damage = script.Damage.Value
+local health = script.Parent.Health.Value
+```
+
+<Callout type="info" title="Server only">
+Value objects are not replicated to clients. To expose a value to clients, mirror it into [State](/server/state).
+</Callout>
+
+## Properties
+
+### Value
+
+```lua
+value.Value: string | number | boolean | Vector3
+```
+
+The stored value. Assigning a value of the wrong type raises an error.
+
+```lua
+script.Score.Value = script.Score.Value + 1
+```
+
+### Name
+
+```lua
+value.Name: string
+```
+
+Object name. `value.ClassName` returns the class, for example `"IntValue"`.
+
+### Parent
+
+```lua
+value.Parent: Script | Part | Model | Value | World
+```
+
+The containing object. Assign to reparent the value, including under a script.
+
+## Methods
+
+### Destroy
+
+```lua
+value:Destroy()
+```
+
+Removes the value and its child values.
+
+### FindFirstChild
+
+```lua
+value:FindFirstChild(name: string): Value?
+```
+
+Returns the child value with the given name, or `nil`.
+
+### GetChildren
+
+```lua
+value:GetChildren(): { Value }
+```
+
+Returns the child values.
+
+## Events
+
+### Changed
+
+```lua
+value.Changed(newValue: any)
+```
+
+Fires when `Value` changes, with the new value.
+
+```lua
+script.Score.Changed:Connect(function(newValue)
+	print("Score is now", newValue)
+end)
+```
+
+## Toolbox configuration
+
+Toolbox models expose their tunable parameters as value objects.
+
+| Model | Values |
+| --- | --- |
+| Zombie | `Health`, `Speed`, `Damage` |
+| Respawning Zombie | `Health`, `Speed`, `Damage`, `RespawnTime` |
+| Sword | `Damage`, `Reach` |
+| RPG | `Damage`, `BlastRadius`, `BlastForce`, `ReloadTime` |
+| Sprint System | `SprintSpeed`, `WalkSpeed` |
+| Round System | `LobbyTime`, `RoundTime`, `MinPlayers`, `LobbyPosition`, `MapPosition`, `MapsFolder` |
+| Speed Pad | `Speed`, `Duration`, `NormalSpeed` |
+| Coin | `Amount`, `RespawnTime` |
+| Doors | `OpenTime` |

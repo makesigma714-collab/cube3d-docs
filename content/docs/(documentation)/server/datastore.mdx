@@ -1,0 +1,32 @@
+---
+title: DataStore
+description: "Persistent per-player storage, partitioned into named stores. Server only."
+icon: Database
+---
+
+```lua
+local DataStore = game:GetService("DataStore")
+```
+
+Writes are flushed automatically on a short interval, when a player leaves and on server shutdown. There is no explicit save call. In Studio test sessions data is held in memory and starts empty. Saved data can be viewed, edited, cleared and exported from the **DataStore** section of the game's **Manage** page. See [Saving data](/tutorials/saving-data).
+
+| Limit | Amount |
+| --- | --- |
+| Stores per game | 32 |
+| Fields per player in one store | 64 |
+| Store and field names | 1 to 50 characters: letters, digits, spaces, `.`, `-` and `_` |
+| Values | Numbers, booleans, or strings up to 1000 characters |
+
+## Methods
+
+### GetStore
+
+```lua
+DataStore:GetStore(name: string): Store
+```
+
+Returns the [Store](/server/store) with the given name, creating it on first use. Each store holds an independent set of fields per player.
+
+```lua
+local stats = DataStore:GetStore("Leaderstats")
+```

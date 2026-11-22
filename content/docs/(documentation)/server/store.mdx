@@ -1,0 +1,91 @@
+---
+title: Store
+description: "A named DataStore partition holding a set of persisted fields per player."
+icon: Save
+---
+
+```lua
+local stats = game:GetService("DataStore"):GetStore("Leaderstats")
+```
+
+Every method accepts a `Player` or a numeric user id. A user id gives access to data for players who are not connected.
+
+## Methods
+
+### Load
+
+```lua
+store:Load(player: Player | number): table
+```
+
+Yields until the player's data has loaded, then returns every field as a table.
+
+```lua
+Players.PlayerAdded:Connect(function(player)
+	local saved = stats:Load(player)
+	player:SetStat("Coins", saved.Coins or 0)
+end)
+```
+
+### Get
+
+```lua
+store:Get(player: Player | number, field: string): any
+```
+
+Returns the value of `field`, or `nil`.
+
+### Set
+
+```lua
+store:Set(player: Player | number, field: string, value: any)
+```
+
+Writes `value` to `field`.
+
+### Increment
+
+```lua
+store:Increment(player: Player | number, field: string, amount: number?): number
+```
+
+Adds `amount` (default 1) to a numeric field and returns the new value.
+
+```lua
+local coins = stats:Increment(player, "Coins", 1)
+player:SetStat("Coins", coins)
+```
+
+### Save
+
+```lua
+store:Save(player: Player | number, fields: table)
+```
+
+Writes several fields at once. Fields not present in `fields` are left unchanged.
+
+### Remove
+
+```lua
+store:Remove(player: Player | number, field: string)
+```
+
+Deletes `field`.
+
+### Clear
+
+```lua
+store:Clear(player: Player | number)
+```
+
+Deletes every field the player has in this store.
+
+## Properties
+
+### Name
+
+```lua
+store.Name: string
+```
+
+The name passed to `GetStore`.

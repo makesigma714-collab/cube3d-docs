@@ -1,0 +1,225 @@
+---
+title: Part
+description: "The base physical primitive. Exposes transform, appearance and physics properties, and touch and click events."
+icon: Box
+---
+
+```lua
+local part = script.Parent
+```
+
+## Properties
+
+### Name
+
+```lua
+part.Name: string
+```
+
+Maximum 60 characters. `part.ClassName` returns `"Part"`.
+
+### Position
+
+```lua
+part.Position: Vector3
+```
+
+World-space position of the part's center.
+
+### Size
+
+```lua
+part.Size: Vector3
+```
+
+Dimensions in studs. Each axis is clamped to 0.25 to 1024.
+
+### Rotation
+
+```lua
+part.Rotation: Vector3
+```
+
+Euler rotation in degrees around the X, Y and Z axes.
+
+### Color
+
+```lua
+part.Color: Color3
+```
+
+```lua
+part.Color = Color3.fromRGB(255, 80, 80)
+```
+
+### Material
+
+```lua
+part.Material: string
+```
+
+Material identifier, for example `plastic`, `metal`, `wood`, `neon` or `glass`.
+
+### Transparency
+
+```lua
+part.Transparency: number
+```
+
+Range 0 (opaque) to 1 (fully transparent).
+
+### CanCollide
+
+```lua
+part.CanCollide: boolean
+```
+
+Whether the part collides with characters and other parts.
+
+### Anchored
+
+```lua
+part.Anchored: boolean
+```
+
+When `true`, the part is fixed in place and excluded from physics simulation.
+
+### Velocity
+
+```lua
+part.Velocity: Vector3
+```
+
+Linear velocity in studs per second. Applies to unanchored parts.
+
+### Mass
+
+```lua
+part.Mass: number
+```
+
+Computed from `Size` and `Density`. Read only.
+
+### Density
+
+```lua
+part.Density: number
+```
+
+Range 0.01 to 100.
+
+### Friction
+
+```lua
+part.Friction: number
+```
+
+Range 0 to 2.
+
+### Elasticity
+
+```lua
+part.Elasticity: number
+```
+
+Coefficient of restitution. Range 0 to 1.
+
+### Type
+
+```lua
+part.Type: string?
+```
+
+Engine-handled behavior. `nil` for a plain part.
+
+| Type | Behavior |
+| --- | --- |
+| `Kill` | Kills any character that touches it. |
+| `Damage` | Applies `Damage` to any character that touches it. |
+| `Seat` | Seats a character on contact. |
+| `Button` | Clickable. Fires `Pressed`. |
+| `Spawn` | Acts as a spawn location. |
+| `Light` | Emits light. |
+| `Door`, `Trigger`, `Scripted` | No engine behavior. Used as tags by scripts. |
+
+### Damage
+
+```lua
+part.Damage: number
+```
+
+Damage applied on touch when `Type` is `Damage`. Range 0 to 1000.
+
+### Parent
+
+```lua
+part.Parent: Part | Model | World
+```
+
+The containing object. Assign to reparent the part under a model, another part or `World`.
+
+## Methods
+
+### Destroy
+
+```lua
+part:Destroy()
+```
+
+Removes the part and all of its descendants.
+
+### Clone
+
+```lua
+part:Clone(): Part
+```
+
+Returns a copy of the part, parented to `World` at the same position.
+
+### ApplyImpulse
+
+```lua
+part:ApplyImpulse(force: Vector3)
+```
+
+Applies an instantaneous impulse to an unanchored part.
+
+### FindFirstChild
+
+```lua
+part:FindFirstChild(name: string): Instance?
+```
+
+Returns the direct child with the given name, or `nil`. Children can also be indexed by name, so `part.Speed.Value` reads a child value named `Speed`.
+
+### GetChildren
+
+```lua
+part:GetChildren(): { Instance }
+```
+
+Returns the direct children of the part.
+
+## Events
+
+### Touched
+
+```lua
+part.Touched(player: Player)
+```
+
+Fires when a player's character begins touching the part. Does not fire again for that player until contact ends.
+
+```lua
+part.Touched:Connect(function(player)
+	player:SendMessage("You stepped on the pad")
+end)
+```
+
+### Pressed
+
+```lua
+part.Pressed(player: Player)
+```
+
+Fires when a player clicks the part while `Type` is `Button`. Clicks are accepted from up to 18 studs away.

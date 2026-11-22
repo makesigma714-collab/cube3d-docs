@@ -1,0 +1,60 @@
+---
+title: Sprinting
+description: "Read keyboard input on the client and apply WalkSpeed on the server through a validated Remote event."
+icon: Zap
+---
+
+## Architecture
+
+Keyboard input is only available to client scripts. `WalkSpeed` is server-authoritative. The client forwards key state to the server through [Remote](/server/remote), and the server applies the speed.
+
+## 1. Client script
+
+Add a script named `Sprint` with **Runs on** set to **Each player**:
+
+```lua
+local Input = game:GetService("Input")
+local Remote = game:GetService("Remote")
+
+Input.KeyDown:Connect(function(key)
+	if key == "Shift" then
+		Remote:FireServer("Sprint", true)
+	end
+end)
+
+Input.KeyUp:Connect(function(key)
+	if key == "Shift" then
+		Remote:FireServer("Sprint", false)
+	end
+end)
+```
+
+## 2. Server script
+
+Add a server script named `Sprint Server` with two NumberValue children: `SprintSpeed` (24) and `WalkSpeed` (16).
+
+```lua
+local Remote = game:GetService("Remote")
+
+local function setting(name, default)
+	local item = script:FindFirstChild(name)
+	if item then
+		return item.Value
+	end
+	return default
+end
+
+Remote.OnServerEvent:Connect(function(player, name, sprinting)
+	if name == "Sprint" and type(sprinting) == "boolean" then
+		player.Character.WalkSpeed = sprinting and setting("SprintSpeed", 24) or setting("WalkSpeed", 16)
+	end
+end)
+```
+
+The handler validates the type of `sprinting` before applying it. Every argument received from a client must be validated.
+
+## 3. Testing
+
+Press **Play** and hold Shift. Adjust `SprintSpeed` in Properties to tune the speed.
+
+The Toolbox **Sprint System** implements this setup.

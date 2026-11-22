@@ -1,0 +1,64 @@
+---
+title: Effects
+description: "Client-local visual effects: full-screen flashes and translucent preview geometry."
+icon: Sparkles
+---
+
+```lua
+local Effects = game:GetService("Effects")
+```
+
+## Methods
+
+### Flash
+
+```lua
+Effects:Flash(color: Color3, seconds: number?)
+```
+
+Overlays `color` on the full screen and fades it out over `seconds` (default 0.4).
+
+```lua
+Effects:Flash(Color3.fromRGB(255, 40, 40), 0.3)
+```
+
+### CreateGhost
+
+```lua
+Effects:CreateGhost(): Ghost
+```
+
+Creates a translucent preview shape, typically used for placement previews. Maximum 16 per client.
+
+## Ghost
+
+### Show
+
+```lua
+ghost:Show(shape: string, centre: Vector3, size: Vector3, rotation: Vector3, color: Color3, opacity: number?)
+```
+
+Renders the ghost with the given geometry. `shape` is a part shape such as `"block"` or `"sphere"`. `rotation` is in degrees. `opacity` defaults to 0.45.
+
+```lua
+local Input = game:GetService("Input")
+local ghost = Effects:CreateGhost()
+
+while true do
+	task.wait()
+	local spot = Input:OnPlane(Vector3.new(0, 0, 0), Vector3.new(0, 1, 0))
+	if spot then
+		ghost:Show("block", spot + Vector3.new(0, 1, 0), Vector3.new(4, 2, 4), Vector3.new(0, 0, 0), Color3.fromRGB(80, 160, 255))
+	else
+		ghost:Hide()
+	end
+end
+```
+
+### Hide
+
+```lua
+ghost:Hide()
+```
+
+Hides the ghost.

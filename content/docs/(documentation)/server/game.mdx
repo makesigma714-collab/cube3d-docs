@@ -1,0 +1,92 @@
+---
+title: game
+description: "Root object of the API. Provides service lookup, server lifecycle events and broadcast on-screen text."
+icon: Gamepad2
+---
+
+## Methods
+
+### GetService
+
+```lua
+game:GetService(name: string): Service
+```
+
+Returns the named service. Raises an error if the service is not available in the current context.
+
+| Service | Server | Client |
+| --- | --- | --- |
+| [Players](/server/players) | ✓ | ✓ |
+| [World](/server/world) | ✓ | ✓ |
+| [Teams](/server/teams) | ✓ | ✓ |
+| [Tools](/server/tools) | ✓ | ✓ |
+| [Remote](/server/remote) | ✓ | ✓ |
+| [State](/server/state) | ✓ | ✓ |
+| [DataStore](/server/datastore) | ✓ | |
+| [Storage](/server/storage) | ✓ | |
+| [UI](/client/ui) | | ✓ |
+| [Input](/client/input) | | ✓ |
+| [Effects](/client/effects) | | ✓ |
+| [Build](/client/build) | | ✓ |
+
+```lua
+local Players = game:GetService("Players")
+```
+
+### Announce
+
+```lua
+game:Announce(text: string, seconds: number?)
+```
+
+Displays `text` centered over a dimmed overlay on every client for `seconds` (1 to 15, default 6). Server only.
+
+Rate limited to one announcement per 2 seconds. Calls inside that window are dropped. Use [Message](#message) for frequently updated text such as countdowns.
+
+```lua
+game:Announce("Round starting on Red Map!", 3)
+```
+
+### Message
+
+```lua
+game:Message(text: string, seconds: number?)
+```
+
+Displays `text` in a bar along the top edge of every client's screen. Server only.
+
+- If `seconds` is omitted, the message persists until replaced.
+- An empty string clears the message.
+- The current message is sent to players who join while it is shown.
+
+```lua
+for left = 10, 1, -1 do
+	game:Message("Intermission: " .. left)
+	task.wait(1)
+end
+game:Message("")
+```
+
+## Events
+
+### Started
+
+```lua
+game.Started()
+```
+
+Fires once, after every server script has started.
+
+### Shutdown
+
+```lua
+game.Shutdown()
+```
+
+Fires before the server shuts down.
+
+```lua
+game.Shutdown:Connect(function()
+	print("Server closing")
+end)
+```

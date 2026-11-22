@@ -1,0 +1,118 @@
+---
+title: World
+description: "Service for top-level world objects, raycasting, explosions and runtime part and weld creation."
+icon: Earth
+---
+
+```lua
+local World = game:GetService("World")
+```
+
+## Properties
+
+### Gravity
+
+```lua
+World.Gravity: number
+```
+
+Gravitational acceleration applied to unanchored parts and characters. Range 0 to 1000. Defaults to the world's configured value.
+
+## Methods
+
+### Raycast
+
+```lua
+World:Raycast(origin: Vector3, direction: Vector3): RaycastResult?
+```
+
+Casts a ray from `origin` along `direction`. The magnitude of `direction` is the ray length, capped at 2048 studs. Returns `nil` on a miss, otherwise a table with these fields:
+
+| Field | Description |
+| --- | --- |
+| `Position` | Intersection point. |
+| `Normal` | Surface normal at the intersection. |
+| `Distance` | Distance from `origin` to the intersection. |
+| `Part` | The part that was hit. |
+
+```lua
+local hit = World:Raycast(Vector3.new(0, 50, 0), Vector3.new(0, -100, 0))
+if hit then
+	print("Ground is at", hit.Position.Y)
+end
+```
+
+### Explode
+
+```lua
+World:Explode(position: Vector3, radius: number?, damage: number?, force: number?)
+```
+
+Creates an explosion at `position`. Humanoids within `radius` take damage that falls off with distance from the center. Unanchored parts in range receive an outward impulse scaled by `force`, and welds in range are destroyed.
+
+| Argument | Default | Range |
+| --- | --- | --- |
+| `radius` | 8 | 0.5 to 64 |
+| `damage` | 100 | 0 to 1000 |
+| `force` | 600 | 0 to 5000 |
+
+```lua
+World:Explode(Vector3.new(0, 5, 0), 12, 40, 800)
+```
+
+### GetHumanoidsNear
+
+```lua
+World:GetHumanoidsNear(position: Vector3, radius: number): { Humanoid }
+```
+
+Returns every living [Humanoid](/server/humanoid), player or NPC, within `radius` studs of `position`.
+
+```lua
+for _, humanoid in ipairs(World:GetHumanoidsNear(spot, 10)) do
+	humanoid:TakeDamage(5)
+end
+```
+
+### CreatePart
+
+```lua
+World:CreatePart(): Part
+```
+
+Creates a part at the world origin with default properties and returns it. Limited to 2000 parts created this way per server.
+
+```lua
+local block = World:CreatePart()
+block.Size = Vector3.new(4, 4, 4)
+block.Position = Vector3.new(0, 20, 0)
+block.Anchored = false
+```
+
+### CreateWeld
+
+```lua
+World:CreateWeld(part0: Part, part1: Part): Weld
+```
+
+Creates and returns a [Weld](/server/weld) that rigidly joins `part0` and `part1`.
+
+### FindFirstChild
+
+```lua
+World:FindFirstChild(name: string): Part | Model | nil
+```
+
+Returns the top-level part or model with the given name, or `nil`.
+
+```lua
+local lava = World:FindFirstChild("Lava")
+```
+
+### GetChildren
+
+```lua
+World:GetChildren(): { Part | Model }
+```
+
+Returns every top-level part and model.

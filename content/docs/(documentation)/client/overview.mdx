@@ -1,0 +1,56 @@
+---
+title: Client scripts
+description: "Client scripts run on each connected device with read-only world access and exclusive access to UI, Input and Effects."
+icon: Monitor
+---
+
+## Creating a client script
+
+Set a script's **Runs on** property to **Each player**, or right-click in the Explorer and choose **New Client Script**. Each connected client runs its own instance of the script.
+
+## Available services
+
+| Service | Purpose |
+| --- | --- |
+| [Players](/client/players) | `LocalPlayer` and the connected player list. |
+| [UI](/client/ui) | Windows, panels, widgets and on-screen messages. |
+| [Input](/client/input) | Keyboard and mouse events, mouse ray queries. |
+| [Effects](/client/effects) | Screen flashes and translucent preview geometry. |
+| [Tools](/client/tools) | Equipping tools and observing the held tool. |
+| [Remote](/server/remote) | Named events to and from the server. |
+| [State](/server/state) | Read access to server-replicated values. |
+| [World](/client/world) | Read-only part lookup. |
+| [Teams](/client/teams) | Read-only team lookup. |
+| [Build](/client/build) | Placement requests in Personal Servers. |
+
+World access from client scripts is read only. Changes that affect other players must be requested from the server through [Remote](/server/remote).
+
+## Parts on the client
+
+`World:FindFirstChild(name)` returns a read-only part with these fields:
+
+| Property | Description |
+| --- | --- |
+| `Name` | Part name. |
+| `Position` | Center position. |
+| `Size` | Dimensions in studs. |
+| `Color` | `Color3`. |
+| `Special` | Lowercase `Type`, or `nil`. |
+| `Bounds` | Bounding box size of the part's shape. |
+
+## Teams on the client
+
+| Member | Description |
+| --- | --- |
+| `Name`, `Color`, `Score` | Read only. |
+| `GetPlayerCount()` | Number of players on the team. |
+
+## Example
+
+```lua
+local Players = game:GetService("Players")
+local UI = game:GetService("UI")
+
+local me = Players.LocalPlayer
+UI:ShowMessage("Welcome, " .. me.Name .. "!", 3)
+```

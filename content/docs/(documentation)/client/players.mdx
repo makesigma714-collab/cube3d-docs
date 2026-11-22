@@ -1,0 +1,48 @@
+---
+title: Players
+description: "Client view of the Players service, including LocalPlayer."
+icon: Users
+---
+
+```lua
+local Players = game:GetService("Players")
+local me = Players.LocalPlayer
+```
+
+## Properties
+
+### LocalPlayer
+
+```lua
+Players.LocalPlayer: Player
+```
+
+The player whose client is running the script.
+
+## Methods
+
+### GetPlayers
+
+```lua
+Players:GetPlayers(): { Player }
+```
+
+Returns all connected players.
+
+## Events
+
+### PlayerAdded
+
+```lua
+Players.PlayerAdded(player: Player)
+```
+
+Fires when a player joins.
+
+### PlayerRemoving
+
+```lua
+Players.PlayerRemoving(player: Player)
+```
+
+Fires before a player is removed.

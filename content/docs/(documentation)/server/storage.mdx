@@ -1,0 +1,67 @@
+---
+title: Storage
+description: "Non-simulated, non-replicated container. Objects inside are inactive until cloned or reparented into the world."
+icon: Archive
+---
+
+```lua
+local Storage = game:GetService("Storage")
+```
+
+Objects in Storage are not rendered, do not collide and are not replicated to clients. Scripts inside stored objects do not run. An object becomes active when it is cloned or reparented into the world. In Studio, Storage appears at the bottom of the Explorer and its contents are hidden from the viewport. A typical use is holding maps for a [round system](/tutorials/round-system).
+
+## Methods
+
+### FindFirstChild
+
+```lua
+Storage:FindFirstChild(name: string): Stored?
+```
+
+Returns the top-level stored object with the given name, or `nil`. Children can also be indexed by name, for example `Storage.Maps`.
+
+### GetChildren
+
+```lua
+Storage:GetChildren(): { Stored }
+```
+
+Returns every top-level stored object.
+
+## Stored objects
+
+Objects inside Storage expose `Name`, `ClassName`, `Parent`, `Value` (value objects only), `FindFirstChild` and `GetChildren`.
+
+### Clone
+
+```lua
+stored:Clone(): Model | Part
+```
+
+Clones the object into the world and returns the clone. The original remains in Storage. Scripts in the clone start and NPCs in the clone are simulated.
+
+```lua
+local copy = Storage.Maps.Arena:Clone()
+copy:MoveTo(Vector3.new(0, 0, 400))
+
+task.wait(60)
+copy:Destroy()
+```
+
+### Parent
+
+```lua
+stored.Parent = World
+```
+
+Moves the object out of Storage into the world, or into a model or part in the world. The object is moved, not copied.
+
+```lua
+Storage.Prize.Parent = game:GetService("World")
+```
+
+## Notes
+
+- Group related objects under one model, for example `Storage.Maps`, and enumerate them with `GetChildren()`.
+- A part named `Spawn` inside each map gives scripts a known teleport target.
+- Clones count toward the world's part limit. Destroy clones that are no longer needed.

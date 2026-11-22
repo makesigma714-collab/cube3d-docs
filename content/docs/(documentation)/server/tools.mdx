@@ -1,0 +1,39 @@
+---
+title: Tools
+description: "Service for looking up tool definitions so they can be granted to players."
+icon: Wrench
+---
+
+```lua
+local Tools = game:GetService("Tools")
+```
+
+Tools are created in Studio with **Tool** on the ribbon, or by selecting parts or a model and choosing **Make Tool from This**. Tool properties control starter inventory, the inventory icon and the swing animation. Grant tools with [Player:GiveTool](/server/player#givetool).
+
+## Methods
+
+### GetTools
+
+```lua
+Tools:GetTools(): { Tool }
+```
+
+Returns every tool defined in the game.
+
+### FindFirstChild
+
+```lua
+Tools:FindFirstChild(name: string): Tool?
+```
+
+Returns the tool with the given name, or `nil`.
+
+```lua
+local rocket = Tools:FindFirstChild("RPG")
+
+pad.Touched:Connect(function(player)
+	if not player:HasTool(rocket) then
+		player:GiveTool(rocket)
+	end
+end)
+```

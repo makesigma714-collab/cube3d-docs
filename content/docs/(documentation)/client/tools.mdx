@@ -1,0 +1,41 @@
+---
+title: Tools
+description: "Client service for equipping tools and observing changes to the held tool."
+icon: Briefcase
+---
+
+```lua
+local Tools = game:GetService("Tools")
+```
+
+Client scripts inside a tool run on the client of the player who owns it. `script.Parent` is the tool and exposes `Name` and the `Equipped`, `Unequipped` and `Activated` events, as on the [server](/server/tool).
+
+## Methods
+
+### Equip
+
+```lua
+Tools:Equip(name: string)
+```
+
+Equips the named tool if it is in the local player's inventory.
+
+```lua
+local Input = game:GetService("Input")
+
+Input.KeyDown:Connect(function(key)
+	if key == "Q" then
+		Tools:Equip("Sword")
+	end
+end)
+```
+
+## Events
+
+### Changed
+
+```lua
+Tools.Changed(name: string?)
+```
+
+Fires when the equipped tool changes. `name` is the new tool's name, or `nil` when unequipped.

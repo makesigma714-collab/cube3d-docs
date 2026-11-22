@@ -1,0 +1,82 @@
+---
+title: Input
+description: "Client service for keyboard and mouse events and mouse ray queries against the world."
+icon: Keyboard
+---
+
+```lua
+local Input = game:GetService("Input")
+```
+
+## Methods
+
+### Target
+
+```lua
+Input:Target(reach: number?): Target?
+```
+
+Casts the mouse ray up to `reach` studs (default 400) and returns a table with `Part`, `Position` and `Normal`. Returns `nil` on a miss or when the cursor is over UI.
+
+```lua
+Input.MouseDown:Connect(function(button)
+	local target = Input:Target()
+	if button == 1 and target then
+		print("Clicked " .. target.Part.Name)
+	end
+end)
+```
+
+### OnPlane
+
+```lua
+Input:OnPlane(point: Vector3, normal: Vector3, reach: number?): Vector3?
+```
+
+Returns the intersection of the mouse ray with the plane through `point` with normal `normal`, or `nil` if there is none within `reach`.
+
+```lua
+local spot = Input:OnPlane(Vector3.new(0, 0, 0), Vector3.new(0, 1, 0))
+```
+
+## Events
+
+### KeyDown
+
+```lua
+Input.KeyDown(key: string)
+```
+
+Fires when a key is pressed. `key` is the key name, for example `"E"`, `"Shift"` or `"Space"`.
+
+```lua
+Input.KeyDown:Connect(function(key)
+	if key == "Shift" then
+		print("Started sprinting")
+	end
+end)
+```
+
+### KeyUp
+
+```lua
+Input.KeyUp(key: string)
+```
+
+Fires when a key is released.
+
+### MouseDown
+
+```lua
+Input.MouseDown(button: number)
+```
+
+Fires when a mouse button is pressed. `button` is `1` (left), `2` (right) or `3` (middle).
+
+### MouseUp
+
+```lua
+Input.MouseUp(button: number)
+```
+
+Fires when a mouse button is released.

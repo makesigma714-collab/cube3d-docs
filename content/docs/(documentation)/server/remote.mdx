@@ -1,0 +1,97 @@
+---
+title: Remote
+description: "Named event channel between server scripts and client scripts."
+icon: RadioTower
+---
+
+```lua
+local Remote = game:GetService("Remote")
+```
+
+Events are identified by a string name. Arguments may be numbers, strings, booleans or `Vector3` values.
+
+<Tabs items={['Client script', 'Server script']}>
+<Tab value="Client script">
+
+```lua
+local Remote = game:GetService("Remote")
+local Input = game:GetService("Input")
+
+Input.KeyDown:Connect(function(key)
+	if key == "E" then
+		Remote:FireServer("Wave", "hello")
+	end
+end)
+```
+
+</Tab>
+<Tab value="Server script">
+
+```lua
+local Remote = game:GetService("Remote")
+
+Remote.OnServerEvent:Connect(function(player, name, text)
+	if name == "Wave" then
+		print(player.Name .. " waved: " .. tostring(text))
+	end
+end)
+```
+
+</Tab>
+</Tabs>
+
+<Callout type="warn" title="Validate on the server">
+Clients are untrusted. A modified client can send any event name with any arguments, so the server must validate every request before acting on it.
+</Callout>
+
+## Methods
+
+### FireClient
+
+```lua
+Remote:FireClient(player: Player, name: string, ...)
+```
+
+Fires a named event to one client. Server only.
+
+### FireAllClients
+
+```lua
+Remote:FireAllClients(name: string, ...)
+```
+
+Fires a named event to all clients. Server only.
+
+### FireServer
+
+```lua
+Remote:FireServer(name: string, ...)
+```
+
+Fires a named event to the server. Client only.
+
+## Events
+
+### OnServerEvent
+
+```lua
+Remote.OnServerEvent(player: Player, name: string, ...)
+```
+
+Fires when a client calls `FireServer`. The sending player is always the first argument. Server only.
+
+### OnClientEvent
+
+```lua
+Remote.OnClientEvent(name: string, ...)
+```
+
+Fires when the server calls `FireClient` or `FireAllClients`. Client only.
+
+```lua
+Remote.OnClientEvent:Connect(function(name)
+	if name == "Flash" then
+		game:GetService("Effects"):Flash(Color3.fromRGB(255, 255, 255))
+	end
+end)
+```

@@ -1,0 +1,82 @@
+---
+title: Model
+description: "Container that groups parts, models, values and scripts into one transformable unit."
+icon: Boxes
+---
+
+```lua
+local car = game:GetService("World"):FindFirstChild("Car")
+```
+
+## Properties
+
+### Name
+
+```lua
+model.Name: string
+```
+
+Read only. `model.ClassName` returns `"Model"`.
+
+### Parent
+
+```lua
+model.Parent: Part | Model | World
+```
+
+The containing object. Assign to reparent the model under another model, a part or `World`.
+
+## Methods
+
+### MoveTo
+
+```lua
+model:MoveTo(position: Vector3)
+```
+
+Translates the model so the bottom of its bounding box is at `position`. NPCs inside the model are teleported with it.
+
+### Clone
+
+```lua
+model:Clone(): Model
+```
+
+Returns a copy parented to `World` at the same position. Scripts in the copy start and NPCs in the copy are simulated.
+
+```lua
+local copy = World:FindFirstChild("Tree"):Clone()
+copy:MoveTo(Vector3.new(40, 0, 10))
+```
+
+### Destroy
+
+```lua
+model:Destroy()
+```
+
+Removes the model and all descendants. Scripts started by a clone are stopped.
+
+### FindFirstChild
+
+```lua
+model:FindFirstChild(name: string): Instance?
+```
+
+Returns the direct child with the given name, or `nil`. Children can also be indexed by name, for example `zombie.Humanoid` or `map.Spawn`.
+
+### GetChildren
+
+```lua
+model:GetChildren(): { Instance }
+```
+
+Returns the direct children of the model.
+
+```lua
+for _, child in ipairs(model:GetChildren()) do
+	if child.ClassName == "Part" then
+		child.Color = Color3.fromRGB(255, 255, 255)
+	end
+end
+```

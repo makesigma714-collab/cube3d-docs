@@ -1,0 +1,55 @@
+---
+title: Teams
+description: "Read-only access to teams from client scripts."
+icon: Flag
+---
+
+```lua
+local Teams = game:GetService("Teams")
+```
+
+## Methods
+
+### GetTeams
+
+```lua
+Teams:GetTeams(): { Team }
+```
+
+Returns every team.
+
+### FindFirstChild
+
+```lua
+Teams:FindFirstChild(name: string): Team?
+```
+
+Returns the team with the given name, or `nil`.
+
+## Team
+
+### Name
+
+```lua
+team.Name: string
+```
+
+### Color
+
+```lua
+team.Color: Color3
+```
+
+### Score
+
+```lua
+team.Score: number
+```
+
+### GetPlayerCount
+
+```lua
+team:GetPlayerCount(): number
+```
+
+Returns the number of players on the team.

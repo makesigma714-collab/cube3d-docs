@@ -1,0 +1,41 @@
+---
+title: Spawn
+description: "Spawn location used when a character joins or respawns, optionally restricted to a team."
+icon: MapPin
+---
+
+Spawn objects are returned by [Teams:GetSpawns](/server/teams#getspawns) and [Teams:CreateSpawn](/server/teams#createspawn).
+
+## Properties
+
+### Position
+
+```lua
+spawn.Position: Vector3
+```
+
+World position where characters spawn.
+
+### Team
+
+```lua
+spawn.Team: Team?
+```
+
+Team this spawn is restricted to, or `nil`.
+
+### Neutral
+
+```lua
+spawn.Neutral: boolean
+```
+
+When `true`, players on any team can spawn here.
+
+### Enabled
+
+```lua
+spawn.Enabled: boolean
+```
+
+When `false`, the spawn is skipped during spawn selection.

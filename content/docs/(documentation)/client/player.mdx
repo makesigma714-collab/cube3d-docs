@@ -1,0 +1,47 @@
+---
+title: Player
+description: "Read-only view of a Player as exposed to client scripts."
+icon: User
+---
+
+Every property is read only on the client. Changes must be requested from the server through [Remote](/server/remote).
+
+## Properties
+
+### Name
+
+```lua
+player.Name: string
+```
+
+Account username.
+
+### UserId
+
+```lua
+player.UserId: number
+```
+
+Numeric account id.
+
+### State
+
+```lua
+player.State: string
+```
+
+Movement state: `Standing`, `Walking`, `Falling` or `Sitting`.
+
+### Team
+
+```lua
+player.Team: Team?
+```
+
+Current team, or `nil`.
+
+```lua
+for _, player in ipairs(Players:GetPlayers()) do
+	print(player.Name, player.Team and player.Team.Name or "no team")
+end
+```

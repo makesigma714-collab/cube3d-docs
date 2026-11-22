@@ -1,0 +1,80 @@
+---
+title: Globals
+description: "Globals and standard libraries available to every script without GetService."
+icon: Globe
+---
+
+## Cube3D globals
+
+| Name | Description |
+| --- | --- |
+| `game` | Root object. Services are accessed with `game:GetService(name)`. See [game](/server/game). |
+| `script` | The executing script object. Exposes `Name`, `Parent` and child values. |
+| `task` | Task scheduler: yielding, deferred and concurrent execution. |
+| `shared` | Table shared by every script in the same context (server or client). |
+| `Vector3` | Vector type. See [Vector3](/types/vector3). |
+| `Color3` | Color type. See [Color3](/types/color3). |
+
+## task
+
+| Function | Description |
+| --- | --- |
+| `task.wait(seconds)` | Yields the current task. With no argument it yields for one frame. |
+| `task.delay(seconds, fn, ...)` | Schedules `fn` to run after `seconds` without yielding the current task. |
+| `task.spawn(fn, ...)` | Runs `fn` immediately in a new task. |
+
+```lua
+task.delay(5, function()
+	print("Five seconds later")
+end)
+
+task.spawn(function()
+	while true do
+		task.wait(1)
+		print("tick")
+	end
+end)
+
+print("This prints first")
+```
+
+## script
+
+| Member | Description |
+| --- | --- |
+| `script.Name` | Script name. |
+| `script.Parent` | Containing part, model or tool, or `nil`. |
+| `script:FindFirstChild(name)` | Returns the child value with the given name, or `nil`. |
+| `script:GetChildren()` | Returns the script's child values. |
+| `script.ValueName` | Shorthand for `script:FindFirstChild("ValueName")`. |
+
+## shared
+
+`shared` is a single table readable and writable by every server script. Each client has a separate `shared` table for its client scripts.
+
+```lua
+shared.coins = shared.coins or {}
+shared.coins[player.UserId] = 10
+```
+
+## Lua basics
+
+| Name | Notes |
+| --- | --- |
+| `print`, `warn`, `error`, `assert` | `print` and `warn` write to Output. |
+| `type`, `typeof` | `typeof` also returns Cube3D type names such as `"Vector3"`, `"Part"` and `"Player"`. |
+| `tostring`, `tonumber` | |
+| `pairs`, `ipairs`, `next`, `select`, `unpack` | |
+| `pcall`, `xpcall` | Protected calls. |
+| `setmetatable`, `getmetatable`, `rawget`, `rawset`, `rawequal`, `rawlen` | |
+
+## Libraries
+
+| Library | Functions |
+| --- | --- |
+| `math` | `abs`, `ceil`, `floor`, `sqrt`, `sin`, `cos`, `tan`, `asin`, `acos`, `atan`, `exp`, `log`, `fmod`, `modf`, `min`, `max`, `random`, `randomseed`, `tointeger`, `type`, `rad`, `deg`, `clamp`, `round`, `sign`, `lerp`, `pi`, `huge` |
+| `string` | `len`, `sub`, `upper`, `lower`, `rep`, `reverse`, `byte`, `char`, `format`, `find`, `match`, `gmatch`, `gsub` |
+| `table` | `insert`, `remove`, `concat`, `sort`, `unpack`, `pack`, `clear`, `find` |
+| `os` | `time`, `clock` |
+
+String functions are also available as methods, for example `("hello"):upper()`.

@@ -1,0 +1,41 @@
+---
+title: Weld
+description: "Rigid joint that binds two parts into a single physics body."
+icon: Link
+---
+
+Welds are created in Studio with **Weld** on the ribbon, or at runtime with [World:CreateWeld](/server/world#createweld). If either part is anchored, the whole assembly is anchored. Explosions destroy welds within their radius.
+
+```lua
+local weld = game:GetService("World"):CreateWeld(seat, car)
+```
+
+The Toolbox **Auto Weld** script welds every part in its model together on start.
+
+## Properties
+
+### Part0
+
+```lua
+weld.Part0: Part
+```
+
+First part of the joint. Read only.
+
+### Part1
+
+```lua
+weld.Part1: Part
+```
+
+Second part of the joint. Read only.
+
+## Methods
+
+### Destroy
+
+```lua
+weld:Destroy()
+```
+
+Removes the weld. Both parts become independent bodies.

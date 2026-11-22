@@ -1,0 +1,82 @@
+---
+title: Vector3
+description: "Three-component vector type used for positions, sizes, directions and rotations."
+icon: Move3d
+---
+
+Y is the up axis. One unit is one stud.
+
+```lua
+local spawn = Vector3.new(0, 5, 0)
+local inFront = character.Position + character.LookVector * 5
+local distance = (part.Position - character.Position).Magnitude
+```
+
+| Operator | Result |
+| --- | --- |
+| `a + b`, `a - b` | Component-wise addition or subtraction. |
+| `a * 2`, `a / 2` | Scalar multiplication or division. |
+| `a * b` | Component-wise multiplication. |
+| `a == b` | `true` if every component is equal within a small tolerance. |
+
+## Constructors
+
+### new
+
+```lua
+Vector3.new(x: number, y: number, z: number): Vector3
+```
+
+Constructs a vector. The constants `Vector3.zero` and `Vector3.one` are also available.
+
+## Properties
+
+### X
+
+```lua
+vector.X: number
+```
+
+X component. `Y` and `Z` are also available.
+
+### Magnitude
+
+```lua
+vector.Magnitude: number
+```
+
+Euclidean length.
+
+### Unit
+
+```lua
+vector.Unit: Vector3
+```
+
+Normalized copy with a magnitude of 1.
+
+## Methods
+
+### Dot
+
+```lua
+a:Dot(b: Vector3): number
+```
+
+Returns the dot product of `a` and `b`.
+
+### Cross
+
+```lua
+a:Cross(b: Vector3): Vector3
+```
+
+Returns the cross product of `a` and `b`.
+
+### Lerp
+
+```lua
+a:Lerp(b: Vector3, amount: number): Vector3
+```
+
+Linearly interpolates from `a` to `b` by `amount`. 0 returns `a` and 1 returns `b`.

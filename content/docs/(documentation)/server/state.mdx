@@ -1,0 +1,56 @@
+---
+title: State
+description: "Server-authoritative key-value table replicated to every client, with change events."
+icon: Share2
+---
+
+```lua
+local State = game:GetService("State")
+```
+
+Values are written by the server and replicated to every client. Clients that join later receive the full current state on connect. Keys are strings. Values may be numbers, strings, booleans or `Vector3`.
+
+## Methods
+
+### Set
+
+```lua
+State:Set(key: string, value: any)
+```
+
+Writes `value` to `key` and replicates it to all clients. Server only.
+
+```lua
+State:Set("Status", "Waiting for players")
+State:Set("TimeLeft", 90)
+```
+
+### Get
+
+```lua
+State:Get(key: string): any
+```
+
+Returns the current value for `key`, or `nil`. Server and client.
+
+## Events
+
+### Changed
+
+```lua
+State.Changed(key: string, value: any)
+```
+
+Fires when a key's value changes. Server and client.
+
+```lua
+local UI = game:GetService("UI")
+local panel = UI:CreatePanel({ Width = 220, Height = 40 })
+local label = panel:AddLabel("", 18, true)
+
+State.Changed:Connect(function(key, value)
+	if key == "TimeLeft" then
+		label.Text = "Time left: " .. value
+	end
+end)
+```

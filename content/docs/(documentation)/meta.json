@@ -1,0 +1,16 @@
+{
+  "title": "Documentation",
+  "root": true,
+  "pages": [
+    "---Getting started---",
+    "...start",
+    "---Tutorials---",
+    "...tutorials",
+    "---Server---",
+    "...server",
+    "---Client---",
+    "...client",
+    "---Types---",
+    "...types"
+  ]
+}

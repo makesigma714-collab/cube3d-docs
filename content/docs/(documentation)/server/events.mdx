@@ -1,0 +1,75 @@
+---
+title: Events
+description: "The signal type behind every event in the API, and the Connection object it returns."
+icon: Bell
+---
+
+```lua
+part.Touched:Connect(function(player)
+	print(player.Name .. " touched " .. part.Name)
+end)
+```
+
+Each handler call runs in its own task, so handlers can yield with `task.wait` without blocking other handlers. An error ends that call only, and the connection stays active. Each script is limited to 2048 connections.
+
+## Methods
+
+### Connect
+
+```lua
+event:Connect(fn: function): Connection
+```
+
+Registers `fn` to be called each time the event fires. Returns a `Connection`.
+
+### Once
+
+```lua
+event:Once(fn: function): Connection
+```
+
+Registers `fn` for the next firing only, then disconnects it.
+
+```lua
+humanoid.Died:Once(function()
+	print("Gone")
+end)
+```
+
+### Wait
+
+```lua
+event:Wait(): ...
+```
+
+Yields the current task until the event fires, then returns the event's arguments.
+
+```lua
+local player = Players.PlayerAdded:Wait()
+```
+
+## Connection
+
+### Disconnect
+
+```lua
+connection:Disconnect()
+```
+
+Disconnects the handler.
+
+```lua
+local connection
+connection = part.Touched:Connect(function(player)
+	player:SendMessage("You found the secret!")
+	connection:Disconnect()
+end)
+```
+
+### Connected
+
+```lua
+connection.Connected: boolean
+```
+
+`true` while the handler is connected.

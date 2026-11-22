@@ -1,0 +1,89 @@
+---
+title: Character
+description: "The in-world body of a Player. Exposes position, facing, movement speed and movement state."
+icon: PersonStanding
+---
+
+```lua
+local character = player.Character
+```
+
+## Properties
+
+### Name
+
+```lua
+character.Name: string
+```
+
+Username of the owning player.
+
+### Position
+
+```lua
+character.Position: Vector3
+```
+
+Position of the character's feet. Assigning teleports the character.
+
+### LookVector
+
+```lua
+character.LookVector: Vector3
+```
+
+Unit vector of the horizontal facing direction. Read only.
+
+### WalkSpeed
+
+```lua
+character.WalkSpeed: number
+```
+
+Movement speed in studs per second. Range 0 to 64, default 16.
+
+```lua
+player.Character.WalkSpeed = 24
+```
+
+### Health
+
+```lua
+character.Health: number
+```
+
+Current health. Read only. Write to [Player.Health](/server/player#health) instead.
+
+### State
+
+```lua
+character.State: string
+```
+
+Current movement state: `Standing`, `Walking`, `Jumping`, `Falling`, `Sitting` or `Dead`.
+
+### Humanoid
+
+```lua
+character.Humanoid: Humanoid
+```
+
+The character's [Humanoid](/server/humanoid).
+
+## Methods
+
+### Sit
+
+```lua
+character:Sit()
+```
+
+Puts the character into the `Sitting` state at its current position.
+
+### Stand
+
+```lua
+character:Stand()
+```
+
+Returns a sitting character to the `Standing` state.

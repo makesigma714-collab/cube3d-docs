@@ -1,0 +1,47 @@
+---
+title: Color3
+description: "RGB color type with components stored in the 0 to 1 range."
+icon: Palette
+---
+
+```lua
+part.Color = Color3.fromRGB(255, 136, 0)
+```
+
+Components are stored in the 0 to 1 range. `==` compares components exactly.
+
+## Constructors
+
+### fromRGB
+
+```lua
+Color3.fromRGB(r: number, g: number, b: number): Color3
+```
+
+Constructs a color from 8-bit components (0 to 255).
+
+### new
+
+```lua
+Color3.new(r: number, g: number, b: number): Color3
+```
+
+Constructs a color from normalized components (0 to 1).
+
+### fromHex
+
+```lua
+Color3.fromHex(text: string): Color3
+```
+
+Parses a hex string such as `"#ff8800"`.
+
+## Properties
+
+### R
+
+```lua
+color.R: number
+```
+
+Red component, 0 to 1. `G` and `B` are also available.

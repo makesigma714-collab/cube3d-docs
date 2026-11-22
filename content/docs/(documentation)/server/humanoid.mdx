@@ -1,0 +1,113 @@
+---
+title: Humanoid
+description: "Health and locomotion controller for player characters and NPC models."
+icon: Bot
+---
+
+A model is treated as an NPC when it contains a Humanoid and parts named `Head`, `Torso`, `Larm`, `Rarm`, `Lleg` and `Rleg`. The Toolbox **NPC**, **Zombie** and **Respawning Zombie** models follow this layout. See [NPCs and zombies](/tutorials/npcs).
+
+## Properties
+
+### Health
+
+```lua
+humanoid.Health: number
+```
+
+Current health. Reaching 0 fires `Died`. Setting a dead NPC's health above 0 revives it.
+
+### MaxHealth
+
+```lua
+humanoid.MaxHealth: number
+```
+
+Range 1 to 1000.
+
+### WalkSpeed
+
+```lua
+humanoid.WalkSpeed: number
+```
+
+Movement speed in studs per second. Range 0 to 64.
+
+### JumpPower
+
+```lua
+humanoid.JumpPower: number
+```
+
+Range 0 to 100.
+
+### WalkToPoint
+
+```lua
+humanoid.WalkToPoint: Vector3
+```
+
+Current `MoveTo` target. Read only.
+
+### Parent
+
+```lua
+humanoid.Parent: Model | Character
+```
+
+The NPC model or player [Character](/server/character) that owns the Humanoid.
+
+## Methods
+
+### MoveTo
+
+```lua
+humanoid:MoveTo(position: Vector3)
+```
+
+Starts moving an NPC toward `position`. Only valid on NPC Humanoids.
+
+```lua
+humanoid:MoveTo(Vector3.new(20, 0, 0))
+humanoid.MoveToFinished:Wait()
+```
+
+### TakeDamage
+
+```lua
+humanoid:TakeDamage(amount: number)
+```
+
+Subtracts `amount` from `Health`.
+
+### Destroy
+
+```lua
+humanoid:Destroy()
+```
+
+Removes the Humanoid from an NPC. Player Humanoids cannot be destroyed.
+
+## Events
+
+### Died
+
+```lua
+humanoid.Died()
+```
+
+Fires when `Health` reaches 0.
+
+```lua
+humanoid.Died:Connect(function()
+	task.wait(5)
+	npc:Destroy()
+end)
+```
+
+### MoveToFinished
+
+```lua
+humanoid.MoveToFinished(reached: boolean)
+```
+
+Fires when a `MoveTo` ends. `reached` is `false` if the target was not reached.

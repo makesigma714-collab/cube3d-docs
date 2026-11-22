@@ -1,0 +1,66 @@
+---
+title: World
+description: "Read-only lookup of named parts from client scripts."
+icon: Earth
+---
+
+```lua
+local World = game:GetService("World")
+local door = World:FindFirstChild("Door")
+```
+
+## Methods
+
+### FindFirstChild
+
+```lua
+World:FindFirstChild(name: string): Part?
+```
+
+Returns the part with the given name, or `nil`.
+
+## Part
+
+Parts returned on the client are read only.
+
+### Name
+
+```lua
+part.Name: string
+```
+
+### Position
+
+```lua
+part.Position: Vector3
+```
+
+Center position.
+
+### Size
+
+```lua
+part.Size: Vector3
+```
+
+### Color
+
+```lua
+part.Color: Color3
+```
+
+### Special
+
+```lua
+part.Special: string?
+```
+
+Lowercase `Type`, for example `"kill"`, or `nil`.
+
+### Bounds
+
+```lua
+part.Bounds: Vector3
+```
+
+Bounding box size of the part's shape.

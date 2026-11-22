@@ -1,0 +1,58 @@
+---
+title: Tool
+description: "Equippable item. Server scripts inside a tool receive equip, unequip and activation events."
+icon: Hammer
+---
+
+Server scripts inside a tool run once per tool, with `script.Parent` set to the tool. See [Tools that aim](/tutorials/tools).
+
+## Properties
+
+### Name
+
+```lua
+tool.Name: string
+```
+
+Tool name.
+
+## Events
+
+### Activated
+
+```lua
+tool.Activated(player: Player, aim: Vector3?)
+```
+
+Fires when the holding player clicks. `aim` is the world position under the cursor, or `nil` if there was none.
+
+```lua
+local sword = script.Parent
+local World = game:GetService("World")
+
+sword.Activated:Connect(function(player)
+	local character = player.Character
+	local reach = character.Position + Vector3.new(0, 3, 0) + character.LookVector * 3
+	for _, humanoid in ipairs(World:GetHumanoidsNear(reach, 3.5)) do
+		if humanoid ~= character.Humanoid then
+			humanoid:TakeDamage(25)
+		end
+	end
+end)
+```
+
+### Equipped
+
+```lua
+tool.Equipped(player: Player)
+```
+
+Fires when a player equips the tool.
+
+### Unequipped
+
+```lua
+tool.Unequipped(player: Player)
+```
+
+Fires when a player unequips the tool.

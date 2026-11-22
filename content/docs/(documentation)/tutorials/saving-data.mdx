@@ -1,0 +1,73 @@
+---
+title: Saving data
+description: "Persist per-player fields across sessions with DataStore:GetStore, Load, Increment and Save."
+icon: Save
+---
+
+## 1. Load on join
+
+Create a server script in the Scripts folder:
+
+```lua
+local Players = game:GetService("Players")
+local DataStore = game:GetService("DataStore")
+local stats = DataStore:GetStore("Leaderstats")
+
+Players.PlayerAdded:Connect(function(player)
+	local saved = stats:Load(player)
+	player:SetStat("Coins", saved.Coins or 0)
+end)
+```
+
+`Load` yields until the player's fields are available and returns them as a table. New players receive an empty table, so `saved.Coins or 0` supplies the default.
+
+## 2. Increment on pickup
+
+Add a part named `Coin` with a server script:
+
+```lua
+local stats = game:GetService("DataStore"):GetStore("Leaderstats")
+local coin = script.Parent
+local taken = false
+
+coin.Touched:Connect(function(player)
+	if taken then
+		return
+	end
+	taken = true
+	local coins = stats:Increment(player, "Coins", 1)
+	player:SetStat("Coins", coins)
+	coin.Transparency = 1
+	task.wait(10)
+	coin.Transparency = 0
+	taken = false
+end)
+```
+
+`Increment` updates the stored field and returns the new value, so the leaderboard always reflects the persisted total.
+
+## 3. Testing
+
+In Studio test sessions DataStore is in-memory and starts empty. In published games writes are flushed on a short interval, on player leave and on server shutdown.
+
+## 4. Writing several fields
+
+```lua
+stats:Save(player, {
+	Coins = 120,
+	Wins = 3,
+	Hat = "Crown",
+})
+```
+
+`Save` only writes the fields present in the table.
+
+## Inspecting saved data
+
+The **DataStore** section of the game's **Manage** page lists, edits, clears and exports stored data.
+
+## Toolbox scripts
+
+**Saved Leaderstats**, **Saved Coin**, **Saved Win Pad** and **Visit Counter** in the Toolbox implement these patterns.
+
+See [DataStore](/server/datastore) and [Store](/server/store) for the full API and limits.

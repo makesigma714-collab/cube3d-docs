@@ -1,4 +1,6 @@
-node_modules
-.vitepress/cache
-.vitepress/dist
+/node_modules
+.source
+/.next/
+/out/
 .DS_Store
+next-env.d.ts

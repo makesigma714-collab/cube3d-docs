@@ -1,0 +1,209 @@
+---
+title: Widget
+description: "UI element type returned by the UI service: labels, buttons, text boxes, layout containers and windows."
+icon: PanelsTopLeft
+---
+
+```lua
+local window = UI:CreateWindow(260, 180)
+local row = window:AddRow()
+local buy = row:AddButton("Buy sword")
+
+buy.Pressed:Connect(function()
+	game:GetService("Remote"):FireServer("Buy", "Sword")
+end)
+```
+
+## Properties
+
+### Text
+
+```lua
+widget.Text: string
+```
+
+Text content of a label, button or text box.
+
+### TextColor
+
+```lua
+widget.TextColor: Color3
+```
+
+### TextSize
+
+```lua
+widget.TextSize: number
+```
+
+### TextAlignment
+
+```lua
+widget.TextAlignment: string
+```
+
+Horizontal alignment: `Left`, `Center` or `Right`.
+
+### Visible
+
+```lua
+widget.Visible: boolean
+```
+
+Whether the widget is rendered.
+
+### X
+
+```lua
+widget.X: number
+```
+
+Horizontal offset in pixels. `Y`, `Width` and `Height` are also available.
+
+### Grow
+
+```lua
+widget.Grow: boolean
+```
+
+Expands the widget to fill the available width of its container. `Tall` does the same vertically.
+
+### BackgroundColor
+
+```lua
+widget.BackgroundColor: Color3
+```
+
+Background color of a window or panel. `BackgroundTransparency`, `BorderColor` and `BorderSize` are also available.
+
+### Selected
+
+```lua
+widget.Selected: boolean
+```
+
+Renders a button in its selected state. `Starred` adds a star marker.
+
+## Methods
+
+### AddLabel
+
+```lua
+widget:AddLabel(text: string, size: number?, bold: boolean?): Widget
+```
+
+Adds a text label. `size` ranges from 8 to 40.
+
+### AddButton
+
+```lua
+widget:AddButton(text: string, style: string?): Widget
+```
+
+Adds a button. `style` is `"flat"` or `"list"`.
+
+### AddTextBox
+
+```lua
+widget:AddTextBox(placeholder: string?): Widget
+```
+
+Adds a single-line text input.
+
+### AddSwatch
+
+```lua
+widget:AddSwatch(color: Color3, tip: string?): Widget
+```
+
+Adds a color swatch button. `tip` sets its tooltip.
+
+### AddPicture
+
+```lua
+widget:AddPicture(options: table): Widget
+```
+
+Adds a rendered thumbnail of a part defined by `Shape`, `Material` and `Color`.
+
+### AddRow
+
+```lua
+widget:AddRow(): Widget
+```
+
+Adds a horizontal layout container.
+
+### AddColumn
+
+```lua
+widget:AddColumn(width: number?): Widget
+```
+
+Adds a vertical layout container.
+
+### AddList
+
+```lua
+widget:AddList(width: number?): Widget
+```
+
+Adds a vertically scrolling list.
+
+### AddGrid
+
+```lua
+widget:AddGrid(columns: number?, tileSize: number?): Widget
+```
+
+Adds a scrolling grid of `columns` columns with `tileSize` tiles.
+
+### FindFirstChild
+
+```lua
+widget:FindFirstChild(name: string): Widget?
+```
+
+Returns the child widget with the given name, or `nil`.
+
+### Clear
+
+```lua
+widget:Clear()
+```
+
+Destroys every child widget.
+
+### Destroy
+
+```lua
+widget:Destroy()
+```
+
+Destroys the widget and its children.
+
+## Events
+
+### Pressed
+
+```lua
+widget.Pressed()
+```
+
+Fires when a button is clicked.
+
+### RightPressed
+
+```lua
+widget.RightPressed()
+```
+
+Fires when a button is right-clicked.
+
+### Changed
+
+```lua
+widget.Changed(text: string)
+```
+
+Fires when a text box's contents change.

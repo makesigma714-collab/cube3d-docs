@@ -1,0 +1,116 @@
+---
+title: Build
+description: "Client service for placement and removal requests in Personal Servers."
+icon: BrickWall
+---
+
+```lua
+local Build = game:GetService("Build")
+```
+
+Only available in Personal Servers. In other games `CanBuild` is `false` and `Place` raises an error.
+
+## Properties
+
+### CanBuild
+
+```lua
+Build.CanBuild: boolean
+```
+
+Whether the local player has build permission in this server.
+
+### Rank
+
+```lua
+Build.Rank: string
+```
+
+The local player's rank in this server: `Owner`, `Admin`, `Builder` or `Visitor`.
+
+## Methods
+
+### Place
+
+```lua
+Build:Place(centre: Vector3, size: Vector3, options: table?)
+```
+
+Sends a placement request to the server. Supported `options`: `Rotation`, `Name`, `Shape`, `Material`, `Special`, `Transparency`, `Team`, `Color` and `Solid`. Rejected requests fire `Refused`.
+
+```lua
+local Input = game:GetService("Input")
+
+Input.MouseDown:Connect(function(button)
+	local target = Input:Target()
+	if button == 1 and target and Build.CanBuild then
+		Build:Place(target.Position + target.Normal * 2, Vector3.new(4, 4, 4), { Color = Color3.fromRGB(240, 200, 60) })
+	end
+end)
+```
+
+### Remove
+
+```lua
+Build:Remove(part: Part)
+```
+
+Sends a removal request for `part` to the server.
+
+### Press
+
+```lua
+Build:Press(part: Part)
+```
+
+Sends a press for a part whose `Type` is `Button`.
+
+### Fits
+
+```lua
+Build:Fits(centre: Vector3, size: Vector3, rotation: Vector3?): boolean
+```
+
+Returns `true` if a part with these bounds would not overlap existing geometry.
+
+### Footprint
+
+```lua
+Build:Footprint(size: Vector3, rotation: Vector3?): Vector3
+```
+
+Returns the axis-aligned bounding size of `size` after applying `rotation`.
+
+### Materials
+
+```lua
+Build:Materials(): { table }
+```
+
+Returns the material list. Each entry has `Id`, `Name` and `Category`.
+
+## Events
+
+### RankChanged
+
+```lua
+Build.RankChanged(rank: string)
+```
+
+Fires when the local player's rank changes.
+
+### Refused
+
+```lua
+Build.Refused(text: string)
+```
+
+Fires when the server rejects a build request. `text` is the reason.
+
+### Saved
+
+```lua
+Build.Saved(unsaved: number)
+```
+
+Fires after the server persists the build. `unsaved` is the number of pending changes.

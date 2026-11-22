@@ -1,0 +1,92 @@
+---
+title: Teams
+description: "Service for creating and querying teams and spawn locations, balancing players and resolving damage rules."
+icon: Flag
+---
+
+```lua
+local Teams = game:GetService("Teams")
+```
+
+Teams can be defined in Studio or created at runtime. Each team is a [Team](/server/team) object and each spawn location is a [Spawn](/server/spawn).
+
+## Properties
+
+### AllowSwitching
+
+```lua
+Teams.AllowSwitching: boolean
+```
+
+When `true`, players can choose their own team.
+
+## Methods
+
+### CreateTeam
+
+```lua
+Teams:CreateTeam(settings: table): Team
+```
+
+Creates and returns a team. `Name` is required and must be unique.
+
+```lua
+local red = Teams:CreateTeam({
+	Name = "Red",
+	Color = Color3.fromRGB(230, 60, 60),
+	Description = "Defend the base",
+	MaxPlayers = 8,
+})
+```
+
+### CreateSpawn
+
+```lua
+Teams:CreateSpawn(settings: table): Spawn
+```
+
+Creates and returns a spawn location. `Position` is required. `Team` and `Neutral` are optional.
+
+```lua
+Teams:CreateSpawn({ Position = Vector3.new(0, 2, 50), Team = red })
+```
+
+### GetTeams
+
+```lua
+Teams:GetTeams(): { Team }
+```
+
+Returns every team.
+
+### FindFirstChild
+
+```lua
+Teams:FindFirstChild(name: string): Team?
+```
+
+Returns the team with the given name, or `nil`.
+
+### GetSpawns
+
+```lua
+Teams:GetSpawns(): { Spawn }
+```
+
+Returns every spawn location.
+
+### Balance
+
+```lua
+Teams:Balance()
+```
+
+Redistributes players to even out team sizes.
+
+### CanDamage
+
+```lua
+Teams:CanDamage(attacker: Player, target: Player): boolean
+```
+
+Returns `true` if `attacker` may damage `target` under the current team and friendly-fire rules.

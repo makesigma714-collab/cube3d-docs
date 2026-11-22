@@ -1,0 +1,107 @@
+---
+title: Team
+description: "A single team with name, color, score, friendly-fire setting and membership events."
+icon: Shield
+---
+
+```lua
+local blue = game:GetService("Teams"):FindFirstChild("Blue")
+```
+
+## Properties
+
+### Name
+
+```lua
+team.Name: string
+```
+
+Read only.
+
+### Color
+
+```lua
+team.Color: Color3
+```
+
+### Score
+
+```lua
+team.Score: number
+```
+
+Team score shown on the leaderboard.
+
+### FriendlyFire
+
+```lua
+team.FriendlyFire: boolean
+```
+
+When `true`, players on this team can damage each other.
+
+### MaxPlayers
+
+```lua
+team.MaxPlayers: number
+```
+
+Player cap. 0 means unlimited. Read only.
+
+## Methods
+
+### AddScore
+
+```lua
+team:AddScore(amount: number)
+```
+
+Adds `amount` to `Score`.
+
+### GetPlayers
+
+```lua
+team:GetPlayers(): { Player }
+```
+
+Returns the players on the team.
+
+### GetPlayerCount
+
+```lua
+team:GetPlayerCount(): number
+```
+
+Returns the number of players on the team.
+
+### Destroy
+
+```lua
+team:Destroy()
+```
+
+Removes the team.
+
+## Events
+
+### PlayerAdded
+
+```lua
+team.PlayerAdded(player: Player)
+```
+
+Fires when a player is added to the team.
+
+```lua
+blue.PlayerAdded:Connect(function(player)
+	player:SendMessage("You joined Blue!")
+end)
+```
+
+### PlayerRemoved
+
+```lua
+team.PlayerRemoved(player: Player)
+```
+
+Fires when a player is removed from the team.
