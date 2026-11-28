@@ -1,0 +1,54 @@
+---
+title: GamePasses
+description: "Checks gamepass ownership and reads gamepass details. Server only."
+icon: Ticket
+---
+
+```lua
+local GamePasses = game:GetService("GamePasses")
+```
+
+Gamepasses are made on the **Gamepasses** tab of the game's **Manage** page for 25 Cubx each and go on sale once staff approve them. The price is set by the game's owner, from 1 to 1,000,000 Cubx, and the owner receives 70% of each sale. Players buy gamepasses on the game's page. A player who buys one while playing is seen as an owner within 15 seconds.
+
+The game's owner owns all of the game's gamepasses. In Studio test play you own your own game's gamepasses. Every method waits for the website's answer.
+
+## Methods
+
+### Has
+
+```lua
+GamePasses:Has(player: Player, passId: number): boolean
+```
+
+Returns whether the player owns the gamepass.
+
+```lua
+local GamePasses = game:GetService("GamePasses")
+local Tools = game:GetService("Tools")
+local Players = game:GetService("Players")
+
+Players.PlayerAdded:Connect(function(player)
+	if GamePasses:Has(player, 7) then
+		player:GiveTool(Tools:FindFirstChild("Rocket"))
+	end
+end)
+```
+
+### GetInfo
+
+```lua
+GamePasses:GetInfo(passId: number): PassInfo?
+```
+
+Returns the gamepass's details, or `nil` and the reason when the gamepass does not exist or is not approved.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `Id` | number | Gamepass ID. |
+| `Name` | string | Gamepass name. |
+| `Description` | string | Gamepass description. |
+| `Icon` | number | Decal ID of the gamepass picture. Assign it to [Part.Decal](/server/part#decal) to show it on a part. |
+| `Price` | number | Price in Cubx. |
+| `GameId` | number | ID of the game the gamepass belongs to. |
+
+The **Gamepass Door** model in the Toolbox moves owners of the gamepass in its `GamePassId` value through the door and blocks everyone else.

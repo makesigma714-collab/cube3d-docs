@@ -94,6 +94,18 @@ player:SendMessage(text: string)
 
 Sends a system chat message visible only to this player.
 
+### Notify
+
+```lua
+player:Notify(title: string, text: string?, picture: number?)
+```
+
+Shows a popup in the bottom right corner of this player's screen for 5 seconds. `picture` is a decal ID shown beside the text. Titles are cut to 40 characters and text to 150. Up to 4 popups show at once; the oldest is removed first. For the local player on the client, use [UI:Notify](/client/ui#notify).
+
+```lua
+player:Notify("Welcome!", "Step on the pad to win your first badge.")
+```
+
 ### TakeDamage
 
 ```lua

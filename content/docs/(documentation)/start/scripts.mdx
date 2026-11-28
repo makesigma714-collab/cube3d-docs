@@ -13,7 +13,7 @@ A script's execution context is set by its **Runs on** property.
 | Runs on | The server, once | Each connected client |
 | World access | Read and write | Read only. Writes go through [Remote](/server/remote) |
 | Visibility | Every player, part and model | Replicated objects only |
-| Services | Players, World, Teams, Tools, Remote, State, DataStore, Storage | Players, World, Teams, Remote, State, UI, Effects, Input, Tools, Build |
+| Services | Players, World, Teams, Tools, Remote, State, DataStore, Storage, Badges, GamePasses | Players, World, Teams, Remote, State, UI, Effects, Input, Tools, Build |
 
 Authoritative game state (scoring, damage, doors, round flow) belongs on the server. Local presentation (menus, input handling, screen effects) belongs on the client.
 

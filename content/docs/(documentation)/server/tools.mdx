@@ -10,6 +10,8 @@ local Tools = game:GetService("Tools")
 
 Tools are created in Studio with **Tool** on the ribbon, or by selecting parts or a model and choosing **Make Tool from This**. Tool properties control starter inventory, the inventory icon and the swing animation. Grant tools with [Player:GiveTool](/server/player#givetool).
 
+A backpack holds up to 30 tools. The first 10 sit on the hotbar, on keys 1 to 9 and 0. The rest are in the inventory, opened with the ` key or the arrow above the hotbar, which has a search box and lets players drag tools between the inventory and the hotbar. Backspace drops the held tool in front of the player as loose parts built from the tool's boxes and welded together. Any player who walks into a dropped tool picks it up; the player who dropped it waits a moment first. Up to 40 dropped tools stay in the world, and the oldest is removed first. Set [Tool.CanBeDropped](/server/tool#canbedropped) to `false` to keep a tool from being dropped.
+
 ## Methods
 
 ### GetTools

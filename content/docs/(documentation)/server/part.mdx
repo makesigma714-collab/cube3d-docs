@@ -68,6 +68,27 @@ part.Transparency: number
 
 Range 0 (opaque) to 1 (fully transparent).
 
+### Decal
+
+```lua
+part.Decal: number
+```
+
+Decal ID of the picture shown on the part, or 0 for none. Set 0 to remove it. Decals show on blocks and heads.
+
+### DecalFace
+
+```lua
+part.DecalFace: string
+```
+
+Side the decal is on: `Front`, `Back`, `Left`, `Right`, `Top` or `Bottom`.
+
+```lua
+part.Decal = 127
+part.DecalFace = "Top"
+```
+
 ### CanCollide
 
 ```lua

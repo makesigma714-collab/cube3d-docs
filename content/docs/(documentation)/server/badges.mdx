@@ -1,0 +1,71 @@
+---
+title: Badges
+description: "Awards and checks the game's own player badges. Server only."
+icon: Award
+---
+
+```lua
+local Badges = game:GetService("Badges")
+```
+
+Badges are made on the **Badges** tab of the game's **Manage** page for 30 Cubx each and can be awarded once staff approve them. A game can only award its own badges. Every method waits for the website's answer. In Studio test play, awarded badges are held in memory and reset when the session ends.
+
+Badges a player has won show on their profile under **Player Badges**, and each badge has its own page with its rarity and how many players won it.
+
+## Methods
+
+### Award
+
+```lua
+Badges:Award(player: Player, badgeId: number): (boolean, string?)
+```
+
+Gives the badge to the player. Returns `true` the first time the player receives it and `false` when they already have it. On failure returns `false` and the reason.
+
+The player sees a **Badge Awarded** popup in the bottom right corner of the screen with the badge's picture. Nothing is posted in chat.
+
+```lua
+local Badges = game:GetService("Badges")
+local pad = script.Parent
+local badgeId = script.BadgeId.Value
+
+pad.Touched:Connect(function(player)
+	Badges:Award(player, badgeId)
+end)
+```
+
+### Has
+
+```lua
+Badges:Has(player: Player, badgeId: number): boolean
+```
+
+Returns whether the player has the badge.
+
+### GetInfo
+
+```lua
+Badges:GetInfo(badgeId: number): BadgeInfo?
+```
+
+Returns the badge's details, or `nil` and the reason when the badge does not exist or is not approved.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `Id` | number | Badge ID. |
+| `Name` | string | Badge name. |
+| `Description` | string | Badge description. |
+| `Icon` | number | Decal ID of the badge picture. Assign it to [Part.Decal](/server/part#decal) to show it on a part. |
+| `GameId` | number | ID of the game the badge belongs to. |
+
+```lua
+local info, problem = Badges:GetInfo(badgeId)
+if info then
+	pad.Decal = info.Icon
+	pad.DecalFace = "Top"
+else
+	print(problem)
+end
+```
+
+The **Badge Pad** model in the Toolbox awards the badge in its `BadgeId` value and shows the badge picture on top.

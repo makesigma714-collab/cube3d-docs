@@ -28,6 +28,14 @@ UI:ClearMessage()
 
 Clears the message set by `ShowMessage`.
 
+### Notify
+
+```lua
+UI:Notify(title: string, text: string?, picture: number?)
+```
+
+Shows a popup in the bottom right corner of the local player's screen for 5 seconds. `picture` is a decal ID shown beside the text. Titles are cut to 40 characters and text to 150. Up to 4 popups show at once; the oldest is removed first. Server scripts use [Player:Notify](/server/player#notify).
+
 ### FindFirstChild
 
 ```lua
